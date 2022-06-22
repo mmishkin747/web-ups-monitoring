@@ -1,0 +1,35 @@
+{% extends './base.html' %}
+
+{% block title %}Главная страница моего блога{% endblock %}
+
+{% block header %}
+    {% include './block/slider.html' %}
+{% endblock %}
+{% load static %}
+{% block content %}
+    <div class="container">
+      <h1 class="my-3">Последние записи блога</h1>
+      <div class="row">
+        {% for ups in ups_qs %}
+        <div class="col-md-4">
+          <div class="card mb-4 shadow-sm">
+            <img src="{% static "img/third_img.jpg" %}" alt="" class="card-img-top">
+            <div class="card-body">
+              <h4 class="card-title">{{ ups.ups.name }}</h4>
+              <p class="card-text">Main voltage: {{ ups.main_voltage }} V</p>
+              <p class="card-text">Load: {{ ups.load }} </p>
+              <p class="card-text">Temperature: {{ ups.temperature }} C</p>
+              <p class="card-text">Charge battary: {{ ups.charge_battary }} % </p>
+              <div class="d-flex justify-content-between align-items-center">
+                
+                <small class="text-muted">{{ ups.date_add }}</small>
+                <a href="{{ ups.get_absolute_url }}" class="btn btn-primary">Submit</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+{% endblock %}
+

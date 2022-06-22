@@ -1,0 +1,56 @@
+{% extends './base.html' %}
+
+{% block title %}Detail info ACP {% endblock %}
+
+{% block header %}
+    {% include './block/slider.html' %}
+{% endblock %}
+
+{% block content %}
+{% load static %}
+    <div class="container">
+      <h1 class="my-3">Full info ACP</h1>
+      <div class="row">
+
+        <div class="col-md-4">
+          <div class="card mb-4 shadow-sm">
+            <img src="{% static "img/third_img.jpg" %}" alt="" class="card-img-top">
+            <div class="card-body">
+              <h4 class="card-title">{{ report_ups.model }}</h4>
+              <p class="card-text">Voltage battary: {{ report_ups.voltage_battary }} V</p>
+              <p class="card-text">Report selftest: {{ report_ups.report_selftest }} </p>
+              <p class="card-text">Made date: {{ report_ups.made_date }} C</p>
+              <p class="card-text"> last date battary replacement: {{ report_ups.last_date_battary_replacement }} % </p>
+              <p class="card-text"> Serial number: {{ report_ups.serial_number }} % </p>
+              <p class="card-text"> Date update: {{ report_ups.date_add }} % </p>
+              <div class="d-flex justify-content-between align-items-center">
+                
+                <small class="text-muted">{{ ups.date_scan }}</small>
+                <a href="{{ ups.get_absolute_url }}" class="btn btn-primary">Update</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="card mb-4 shadow-sm">
+            <img src="{% static "img/third_img.jpg" %}" alt="" class="card-img-top">
+            <div class="card-body">
+              <h4 class="card-title">{{ ups.ups.name }}</h4>
+              <p class="card-text">Main voltage: {{ ups.main_voltage }} V</p>
+              <p class="card-text">Load: {{ ups.load }} </p>
+              <p class="card-text">Temperature: {{ ups.temperature }} C</p>
+              <p class="card-text">Charge battary: {{ ups.charge_battary }} % </p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <a href="{{ ups.get_absolute_url }}" class="btn btn-sm btn-outline-secondary">Подробнее</a>
+                </div>
+                <small class="text-muted">{{ ups.date_scan }}</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+{% endblock %}
