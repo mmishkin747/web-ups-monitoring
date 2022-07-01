@@ -1,6 +1,6 @@
 
 from .models import UPS, StateHistory
-from .telnet_with_auth import get_state_ups
+from .state_ups.telnet_with_auth import get_state_ups
 
 
 

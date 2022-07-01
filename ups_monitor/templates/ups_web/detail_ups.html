@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <!-- ✅ load jQuery ✅ -->
+   
+  </head>
+
+  <body>
+    <button id="btn">Make request</button>
+    <p>gender: <span id="gender" >none</span></p>
+    <p>name: <span id="name" >none</span></p>
+
+
+    <button class="btn btn-primary type="button" id="sender">Update</button><br>
+                <p id="pText">Click me!</p>
+
+
+    <p>Main volnage: <span id="main_voltage" >none</span></p>
+
+
+
+    
+    <div class="lang">
+        <button value="en" id="lang-en" >EN</button>
+        <button value="ru" id="lang-ru" onclick="getValue(this)">RU</button>
+     </div>
+
+
+
+
+    <script src="{% static "js/index.js" %}"></script>
+
+  </body>
+</html>

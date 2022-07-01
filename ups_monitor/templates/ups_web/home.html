@@ -11,18 +11,18 @@
       <h1 class="my-3">Последние записи блога</h1>
       <div class="row">
         {% for ups in ups_qs %}
-        <div class="col-md-4">
+        <div class="col-md-4" id="{{ ups.ups.id }}">
           <div class="card mb-4 shadow-sm">
             <img src="{% static "img/third_img.jpg" %}" alt="" class="card-img-top">
             <div class="card-body">
-              <h4 class="card-title">{{ ups.ups.name }}</h4>
-              <p class="card-text">Main voltage: {{ ups.main_voltage }} V</p>
-              <p class="card-text">Load: {{ ups.load }} </p>
-              <p class="card-text">Temperature: {{ ups.temperature }} C</p>
-              <p class="card-text">Charge battary: {{ ups.charge_battary }} % </p>
+              <h4 class="card-title" ><span class="ups_name">{{ ups.ups.name }}</span></h4>
+              <p class="card-text" >Main voltage: <span class="ups_main_voltage">{{ ups.main_voltage }}</span>  V</p>
+              <p class="card-text" >Load: <span class="ups_load">{{ ups.load }}</span> </p>
+              <p class="card-text" >Temperature: <span class="ups_temperature">{{ ups.temperature }}</span> C</p>
+              <p class="card-text" >Charge battary: <span class="ups_charge_battary">{{ ups.charge_battary }}</span>  % </p>
               <div class="d-flex justify-content-between align-items-center">
                 
-                <small class="text-muted">{{ ups.date_add }}</small>
+                <small class="text-muted" > <span class="ups_date_add">{{ ups.date_add }}</span></small>
                 <a href="{{ ups.get_absolute_url }}" class="btn btn-primary">Submit</a>
               </div>
             </div>
@@ -31,5 +31,6 @@
         {% endfor %}
       </div>
     </div>
+    <script src="{% static "js/home.js" %}"></script>
 {% endblock %}
 

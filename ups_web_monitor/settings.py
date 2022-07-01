@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_crontab',
     'ups_monitor',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

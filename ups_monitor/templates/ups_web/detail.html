@@ -1,56 +1,81 @@
+
 {% extends './base.html' %}
 
 {% block title %}Detail info ACP {% endblock %}
 
 {% block header %}
-    {% include './block/slider.html' %}
+
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
 {% endblock %}
 
 {% block content %}
 {% load static %}
+
+
     <div class="container">
-      <h1 class="my-3">Full info ACP</h1>
+      <h1 class="my-3">Detail info ACP</h1>
       <div class="row">
 
-        <div class="col-md-4">
-          <div class="card mb-4 shadow-sm">
+
             <img src="{% static "img/third_img.jpg" %}" alt="" class="card-img-top">
+
             <div class="card-body">
-              <h4 class="card-title">{{ report_ups.model }}</h4>
-              <p class="card-text">Voltage battary: {{ report_ups.voltage_battary }} V</p>
-              <p class="card-text">Report selftest: {{ report_ups.report_selftest }} </p>
-              <p class="card-text">Made date: {{ report_ups.made_date }} C</p>
-              <p class="card-text"> last date battary replacement: {{ report_ups.last_date_battary_replacement }} % </p>
-              <p class="card-text"> Serial number: {{ report_ups.serial_number }} % </p>
-              <p class="card-text"> Date update: {{ report_ups.date_add }} % </p>
+              <h4 class="card-title"> Report info APS </h4>
+
+              <table class="table">
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col">Parameter name</th>
+                    <th scope="col">Value</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">Model</th>
+                    <td><span id="model">{{ report_ups.model }}</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Voltage battary</th>
+                    <td><span id="voltage_battary">{{ report_ups.voltage_battary }}</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Report selftest</th>
+                    <td><span id="report_selftest">{{ report_ups.report_selftest }}</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Made date</th>
+                    <td><span id="made_data">{{ report_ups.made_date }}</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">last date battary replacement:</th>
+                    <td><span id="battary_replacement">{{ report_ups.last_date_battary_replacement }}</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Serial number:</th>
+                    <td><span id="serial_number">{{ report_ups.serial_number }}</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Date update:</th>
+                    <td><span id="date_add">{{ report_ups.date_add }}</span></td>
+                  </tr>
+                </tbody>
+              </table>
+
               <div class="d-flex justify-content-between align-items-center">
                 
-                <small class="text-muted">{{ ups.date_scan }}</small>
-                <a href="{{ ups.get_absolute_url }}" class="btn btn-primary">Update</a>
-              </div>
-            </div>
-          </div>
-        </div>
+                <small class="text-muted"></small>  
 
-        <div class="col-md-4">
-          <div class="card mb-4 shadow-sm">
-            <img src="{% static "img/third_img.jpg" %}" alt="" class="card-img-top">
-            <div class="card-body">
-              <h4 class="card-title">{{ ups.ups.name }}</h4>
-              <p class="card-text">Main voltage: {{ ups.main_voltage }} V</p>
-              <p class="card-text">Load: {{ ups.load }} </p>
-              <p class="card-text">Temperature: {{ ups.temperature }} C</p>
-              <p class="card-text">Charge battary: {{ ups.charge_battary }} % </p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <a href="{{ ups.get_absolute_url }}" class="btn btn-sm btn-outline-secondary">Подробнее</a>
-                </div>
-                <small class="text-muted">{{ ups.date_scan }}</small>
+                <button class="btn btn-primary" type="button" value="{{ ip }}" id="update_data">Update</button>
+
               </div>
-            </div>
+           
           </div>
-        </div>
 
       </div>
     </div>
+    <script src="{% static "js/index.js" %}"></script>
 {% endblock %}
