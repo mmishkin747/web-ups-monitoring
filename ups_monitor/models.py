@@ -1,13 +1,13 @@
 from ast import arg
-from datetime import datetime
+from datetime import datetime, date
 from django.urls import reverse
+from django.utils import timezone
 from django.db import models
 
 # Create your models here.
 
 class UPS(models.Model):
     name = models.CharField(max_length=30, db_index=True)
-    slug = models.SlugField(max_length=30, db_index=True, unique=True)
     ip = models.CharField(max_length=30)
     port = models.IntegerField(default=2065)
     login = models.CharField(max_length=30)
@@ -41,17 +41,17 @@ class StateHistory(models.Model):
         verbose_name_plural = 'State history UPS'
 
     def get_absolute_url(self):
-        return reverse('ups_monitor:detail', args=[self.ups.id, self.ups.slug])
+        return reverse('ups_monitor:detail', args=[self.ups.ip])
 
 
 class ReportHIstory(models.Model):
     ups = models.ForeignKey(UPS, on_delete=models.CASCADE)
-    model = models.CharField(max_length=30) 
-    voltage_battary = models.FloatField()
-    report_selftest = models.CharField(max_length=2)
-    made_date = models.DateField()
-    last_date_battary_replacement = models.DateField()
-    serial_number = models.CharField(max_length=30)
+    model = models.CharField(max_length=30, default='None') 
+    voltage_battary = models.FloatField(default=0.0)
+    report_selftest = models.CharField(max_length=2, default='NA')
+    made_date = models.DateField(default=timezone.now)
+    last_date_battary_replacement = models.DateField(default=timezone.now)
+    serial_number = models.CharField(max_length=30, default='sn0000000')
     date_add = models.DateTimeField(auto_now_add=True)
 
     class Meta:

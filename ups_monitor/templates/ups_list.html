@@ -1,14 +1,14 @@
-{% extends './base.html' %}
+{% extends 'base.html' %}
 
 {% block title %}Главная страница моего блога{% endblock %}
 
 {% block header %}
-    {% include './block/slider.html' %}
+   
 {% endblock %}
 {% load static %}
 {% block content %}
     <div class="container">
-      <h1 class="my-3">Последние записи блога</h1>
+      <h1 class="my-3">Uninterruptibles Power Source</h1>
       <div class="row">
         {% for ups in ups_qs %}
         <div class="col-md-4" id="{{ ups.ups.id }}">
