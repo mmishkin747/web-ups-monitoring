@@ -69,14 +69,14 @@ def update_detail(request, ip):
         ups = UPS.objects.get(ip=ip)
         
         detail = get_detail_ups(login=ups.login, password=ups.password, host=ups.ip, port=ups.port)
-        print(detail)
+        
         ReportHIstory(
             ups=ups,
             model = detail.model,
             voltage_battary = detail.voltage_battary,
             report_selftest = detail.report_selftest,
-            made_date = datetime.today().strftime('%Y-%m-%d'),
-            last_date_battary_replacement = datetime.today().strftime('%Y-%m-%d'),
+            made_date = detail.made_date,
+            last_date_battary_replacement = detail.last_date_battary_replacement,
             serial_number = detail.serial_number,
 
         ).save()

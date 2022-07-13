@@ -1,11 +1,10 @@
+from datetime import datetime
 import telnetlib
 import time
 from collections import namedtuple
 from enum import Enum
 
 
-USERNAME = b'brest_monitoring\n'
-PASSWORD = b'12345\n'
 
                 
 Detail_ups = namedtuple('detail',['model', 'voltage_battary', 'report_selftest',
@@ -58,7 +57,7 @@ def _get_value_ups(telnet:telnetlib.Telnet) -> dict:
         state_ups_dict[command.name] = value.decode('utf-8')
     return state_ups_dict
     
-def _authenticate_connection(telnet: telnetlib.Telnet, login, password) -> None:
+def _authenticate_connection(telnet: telnetlib.Telnet, login, password):
     login_b = bytes(login + "\n", encoding = "utf-8")
     password_b = bytes(password + '\n', encoding = "utf-8")
     telnet.write(login_b)
@@ -81,11 +80,13 @@ def _valid_values(values: dict) -> Detail_ups:
         except ValueError:
             values[key] = 0
     '''
+
+    
     state_ups = Detail_ups(model=values.get('MODEL'),
                             voltage_battary=values.get('VOLTAGE_BATTARY'),
                             report_selftest=values.get('REPORT_SELFTEST'),
-                            made_date=values.get('MADE_DATA'),
-                            last_date_battary_replacement=values.get('LAST_DATA_BATTARY_REPLACEMENT'),
+                            made_date=datetime.strptime(values.get('MADE_DATA'), '%m/%d/%y'),
+                            last_date_battary_replacement=datetime.strptime(values.get('LAST_DATA_BATTARY_REPLACEMENT'), '%m/%d/%y'),
                             serial_number=values.get('SERIAL_NUMBER'),
     )
 
