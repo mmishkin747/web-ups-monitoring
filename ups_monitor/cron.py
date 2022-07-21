@@ -11,7 +11,8 @@ def check():
     for ups in ups_list:
         try:
             state_ups = get_state_ups(host=ups.ip, port=ups.port, login=ups.login, password=ups.password)
-        
+            if state_ups.main_voltage < 10:
+                post_telegram(text=f"{ups.name} {ups.ip} Main_voltage: {state_ups.main_voltage} ")
             print(f'{ups.name} - {state_ups}')
             StateHistory(ups=ups,
                         main_voltage=state_ups.main_voltage,

@@ -14,6 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
+from django.contrib.auth import views as auth_views
 
 from django.contrib import admin
 from django.urls import path, include
@@ -21,5 +22,7 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('gprs/', include(('gprs_monitor.urls', 'gprs_monitor'), namespace='gprs_monitor')),
+    path('login/', auth_views.LoginView.as_view(), name='login'),
+    path('reset-password/', auth_views.PasswordResetView.as_view(), name= 'password_reset'),
     path('', include(('ups_monitor.urls', 'ups_monitor'), namespace='ups_monitor')),
 ]

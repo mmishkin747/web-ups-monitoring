@@ -39,6 +39,22 @@
                     <td><span id="model">{{ report_ups.model }}</span></td>
                   </tr>
                   <tr>
+                    <th scope="row">Main voltage</th>
+                    <td><span id="Main voltage">{{ ups.main_voltage }}</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Load</th>
+                    <td><span id="load">{{ ups.load }}</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Temperature</th>
+                    <td><span id="temperature">{{ ups.temperature }}</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Charge battary</th>
+                    <td><span id="charge_battary">{{ ups.charge_battary }}</span></td>
+                  </tr>
+                  <tr>
                     <th scope="row">Voltage battary</th>
                     <td><span id="voltage_battary">{{ report_ups.voltage_battary }}</span></td>
                   </tr>
@@ -68,14 +84,14 @@
               <div class="d-flex justify-content-between align-items-center">
                 
                 <small class="text-muted"></small>  
-
+                {% if buttom  %}
                 <button class="btn btn-primary" type="button" value="{{ ip }}" id="update_data">Update</button>
-
+                {% endif %}
               </div>
            
           </div>
 
       </div>
     </div>
-    <script src="{% static "js/index.js" %}"></script>
+    <script src="{% static "js/detail.js" %}"></script>
 {% endblock %}

@@ -15,15 +15,20 @@
           <div class="card mb-4 shadow-sm">
             <img src="{% static "img/third_img.jpg" %}" alt="" class="card-img-top">
             <div class="card-body">
-              <h4 class="card-title" ><span class="ups_name">{{ ups.ups.name }}</span></h4>
-              <p class="card-text" >Main voltage: <span class="ups_main_voltage">{{ ups.main_voltage }}</span>  V</p>
-              <p class="card-text" >Load: <span class="ups_load">{{ ups.load }}</span> </p>
-              <p class="card-text" >Temperature: <span class="ups_temperature">{{ ups.temperature }}</span> C</p>
-              <p class="card-text" >Charge battary: <span class="ups_charge_battary">{{ ups.charge_battary }}</span>  % </p>
+              <h4 class="card-title" ><span class="ups_name"></span></h4>
+              <p class="card-text" >Main voltage: <span class="ups_main_voltage"></span>  V</p>
+              <p class="card-text" >Load: <span class="ups_load"></span> </p>
+              <p class="card-text" >Temperature: <span class="ups_temperature"></span> C</p>
+              <p class="card-text" >Charge battary: <span class="ups_charge_battary"></span>  % </p>
               <div class="d-flex justify-content-between align-items-center">
                 
-                <small class="text-muted" > <span class="ups_date_add">{{ ups.date_add }}</span></small>
-                <a href="{{ ups.get_absolute_url }}" class="btn btn-primary">Submit</a>
+                <small class="text-muted" > <span class="ups_date_add"></span></small>
+                
+                
+              </div>
+              <div class="d-flex justify-content-between align-items-center">
+              <a href="/" class="btn btn-primary">Check now</a>
+              <a href="{{ ups.get_absolute_url }}" class="btn btn-primary">Detail</a>
               </div>
             </div>
           </div>
