@@ -48,9 +48,9 @@ class ReportHIstory(models.Model):
     ups = models.ForeignKey(UPS, on_delete=models.CASCADE)
     model = models.CharField(max_length=30, default='None') 
     voltage_battary = models.FloatField(default=0.0)
-    report_selftest = models.CharField(max_length=2, default='NA')
-    made_date = models.DateField(default=timezone.now)
-    last_date_battary_replacement = models.DateField(default=timezone.now)
+    report_selftest = models.CharField(max_length=2, default='NA',)
+    made_date = models.DateField(default=timezone.now,)
+    last_date_battary_replacement = models.DateField(default=timezone.now,)
     serial_number = models.CharField(max_length=30, default='sn0000000')
     date_add = models.DateTimeField(auto_now_add=True)
 

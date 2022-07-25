@@ -31,6 +31,7 @@ $(document).ready(function () {
           document.getElementById('made_data').innerHTML = data.data.made_date,
           document.getElementById('serial_number').innerHTML = data.data.serial_number;
           document.getElementById('battary_replacement').innerHTML = data.data.last_date_battary_replacement;
+          document.getElementById('date_add').innerHTML = data.data.date_add;
 
 
         }, 

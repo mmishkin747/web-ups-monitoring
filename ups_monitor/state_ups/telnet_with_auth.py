@@ -26,7 +26,7 @@ class State_Command_UPS(Enum):
 
 
 
-def get_state_ups(host:str, port:int=2065, login=USERNAME, password=PASSWORD):
+def get_state_ups( login, password, host:str, port:int=2065,):
     telnet = _connect_UPS(host=host, port=port)
     auth = _check_auth(telnet=telnet)
     if auth:

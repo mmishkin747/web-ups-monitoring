@@ -14,6 +14,9 @@ class StateHistorySerializer(serializers.ModelSerializer):
 
 class ReportHistorySerializer(serializers.ModelSerializer):
 
+    date_add = serializers.DateTimeField(format="%B %d, %Y, %H:%M %P")
+    made_date = serializers.DateTimeField(format="%b %d, %Y")
+    last_date_battary_replacement = serializers.DateTimeField(format="%b %d, %Y")
 
     class Meta:
         model = ReportHIstory

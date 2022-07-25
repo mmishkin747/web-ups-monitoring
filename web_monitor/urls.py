@@ -23,6 +23,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('gprs/', include(('gprs_monitor.urls', 'gprs_monitor'), namespace='gprs_monitor')),
     path('login/', auth_views.LoginView.as_view(), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    
     path('reset-password/', auth_views.PasswordResetView.as_view(), name= 'password_reset'),
     path('', include(('ups_monitor.urls', 'ups_monitor'), namespace='ups_monitor')),
 ]
