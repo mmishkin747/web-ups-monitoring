@@ -6,15 +6,16 @@
   <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
       
   </div>
+  
   <div class="mx-auto order-0">
-    <ul class="navbar-nav mr-auto">
+    <ul class="navbar-nav ml-auto">
         <li class="nav-item active">
             <a class="nav-link" href="/">UPS</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item active">
             <a class="nav-link" href="/gprs/">GPRS</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item active">
             <a class="nav-link" href=""/vpn/"">VPN</a>       
     </ul>
       
@@ -23,7 +24,8 @@
       </button>
   </div>
 
-  <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+
+  <div class="navbar-collapse collapse w-100 order-3 dual-collapse2"> 
       <ul class="navbar-nav ml-auto">
         <li>
             <span class="navbar-brand mx-auto" >{{ user.username }}</span>
@@ -32,6 +34,6 @@
             <a class="nav-link" href="{% url 'logout' %}">logout</a>
         </li>
       </ul>
-  </div>
+</div> 
 </nav>
 {% endif %}

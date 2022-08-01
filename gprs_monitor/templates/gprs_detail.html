@@ -1,0 +1,107 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Detail GPRS {% endblock %}
+
+{% block header %}
+
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
+{% endblock %}
+
+{% block content %}
+{% load static %}
+
+
+    <div class="container">
+      <h1 class="my-3">Detail GPRS {{ client.client }}</h1>
+      <div class="row">
+
+
+            <div class="card-body">
+              <h4 class="card-title">  </h4>
+
+              <table class="table">
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col">Parameter name</th>
+                    <th scope="col">Value</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">City</th>
+                    <td>{{ client.city }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Client</th>
+                    <td>{{ client.client }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Login BFT</th>
+                    <td>{{ client.login_bft }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Password BFT</th>
+                    <td>{{ client.password_bft }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">PPP</th>
+                    <td>{{ client.ppp }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Login FTP</th>
+                    <td>{{ client.login_ftp }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Password FTP</th>
+                    <td>{{ client.password_ftp }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Type modem</th>
+                    <td>{{ client.type_modem }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Imei modem</th>
+                    <td>{{ client.imei_modem }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Operator SIM</th>
+                    <td>{{ client.operator_sim }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Number SIM</th>
+                    <td>{{ client.number_sim }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Email client/th>
+                    <td>{{ client.email_client}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Date connekt</th>
+                    <td>{{ client.date_con }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Discription</th>
+                    <td>{{ client.description }}</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="d-flex justify-content-between align-items-center">
+                
+                <small class="text-muted"></small>  
+                {% if buttom  %}
+                <button class="btn btn-primary" type="button" value="{{ ip }}" id="update_data">Update</button>
+                {% endif %}
+              </div>
+           
+          </div>
+
+      </div>
+    </div>
+    <script src="{% static "js/detail.js" %}"></script>
+{% endblock %}

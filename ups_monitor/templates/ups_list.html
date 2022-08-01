@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Главная страница моего блога{% endblock %}
+{% block title %}UPS{% endblock %}
 
 {% block header %}
       <script
@@ -31,7 +31,7 @@
                 
               </div>
               <div class="d-flex justify-content-between align-items-center">
-              <button class="btn btn-primary" type="button" value="{{ ups.ups.ip }}" id="check_now">Check now</button>
+              <button class="btn btn-primary" type="button" value="{{ ups.ups.ip }}" id="check_now">Check</button>
               <a href="{{ ups.get_absolute_url }}" class="btn btn-primary">Detail</a>
               </div>
             </div>

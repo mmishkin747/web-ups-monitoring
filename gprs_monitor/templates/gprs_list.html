@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}GPRS Clients{% endblock %}
+
+
+
+
+
+{% block header %}
+      <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+      ></script>
+{% endblock %}
+{% load static %}
+{% block content %}
+<div>
+    <div class="container py-5">
+        <div class="row">
+            
+            <div class="col-lg-3">
+                <h1 class="h2 pb-4">City</h1>
+                <ul class="list-unstyled templatemo-accordion">
+                    {% for city in cities %}
+                    <li class="pb-2">
+                        <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="{{ city.get_absolute_url }}">
+                            {{ city }}
+                            <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
+                        </a>
+                        
+                        
+                        
+                    
+                    </li>
+                    {% endfor %}
+                    
+                </ul>
+    
+            </div>
+            <div class="col-lg-9">
+                
+                
+                <div class="row">
+                    <div class="card-body">
+                    <h4 class="card-title"> GPRS Clients</h4>
+
+                    <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                        <th scope="col">City</th>
+                        <th scope="col">Client</th>
+                        <th scope="col">login bft</th>
+                        <th scope="col">ppp</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for client in clients %}
+                        <tr>
+                            <td>{{ client.city }}</td>
+                            <td><a class="text-decoration-none" href="{{ client.get_absolute_url }}">{{ client.client }}</a></td>
+                            <td>{{ client.login_bft }}</td>
+                            <td>{{ client.ppp }}</td>
+                        </tr>
+                        {% endfor %}
+
+              </tbody>
+            </table>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+
+        
+ 
+{% endblock %}
+
+
+   
+
+
