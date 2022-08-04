@@ -26,7 +26,7 @@ class State_Command_UPS(Enum):
 
 
 
-def get_state_ups( login, password, host:str, port:int=2065,):
+def get_state_ups( login, password, host:str, port:int=2065,) -> State_ups:
     telnet = _connect_UPS(host=host, port=port)
     auth = _check_auth(telnet=telnet)
     if auth:
@@ -52,7 +52,7 @@ def _get_value_ups(telnet:telnetlib.Telnet, command_ups) -> dict:
     state_ups_dict = dict()
     for command in command_ups:
         telnet.write(command.value)
-        time.sleep(1)
+        time.sleep(0.1)
         value = telnet.read_very_eager()
         state_ups_dict[command.name] = value.decode('utf-8')
     return state_ups_dict

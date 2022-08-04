@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.db import models
 
+
 # Create your models here.
 
 class UPS(models.Model):
@@ -33,6 +34,7 @@ class StateHistory(models.Model):
     charge_battary = models.IntegerField()
     load = models.FloatField()
     working_hours = models.FloatField()
+    low_main_voltage = models.BooleanField(default=False)
     date_add = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -60,3 +62,12 @@ class ReportHIstory(models.Model):
         verbose_name_plural = 'Report history UPS'
 
 
+class ErrorUPS(models.Model):
+    ups = models.ForeignKey(UPS, on_delete=models.CASCADE)
+    error_con = models.BooleanField(default=False)
+    date_add = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ('date_add',)
+        verbose_name = 'Error UPS'
+        verbose_name_plural = 'Errors UPS'

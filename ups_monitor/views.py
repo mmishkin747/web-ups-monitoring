@@ -1,19 +1,15 @@
-from datetime import datetime
-from sre_parse import State
-from django.db.models import Max
+
 from django.shortcuts import redirect, render
-from django.http import HttpResponse, request
+
 from .models import UPS, StateHistory, ReportHIstory
-from rest_framework import status
+
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializers import *
-from .state_ups.datail_telnet import get_detail_ups
-from .state_ups.telnet_with_auth import get_state_ups
 from django.contrib.auth.decorators import login_required 
 from django.core.exceptions import PermissionDenied, EmptyResultSet
 from .state_ups.check import check_state, check_detail
-from django.contrib.auth import logout
+
 
 # Create your views here.
 

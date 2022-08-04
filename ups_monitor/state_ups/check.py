@@ -1,17 +1,20 @@
-from ..models import StateHistory, ReportHIstory
-from .telnet_with_auth import get_state_ups
+from ..models import StateHistory, ReportHIstory, ErrorUPS
+from .state_telnet import get_state_ups
 from .datail_telnet import get_detail_ups
+from .notification.main_noti import noti_main_voltage
 
 
 def check_state(ups):
-    try:
-        state_ups = get_state_ups(host=ups.ip, port=ups.port, login=ups.login, password=ups.password)
-        print(state_ups)
-    except Exception as err:
-            ups_err = f'ups = {ups} , ip = {ups.ip} , {err}'
-            return None
+    
+    state_ups = get_state(ups)
 
-
+    if state_ups == None:
+        print("error con")
+        return None
+    
+    main_voltage = state_ups.main_voltage
+    low_main_voltage = check_low_main_voltage(main_voltage=main_voltage)
+    last_state = check_last_state(ups=ups)
     state = StateHistory.objects.create(
             ups=ups,
             main_voltage=state_ups.main_voltage,
@@ -19,9 +22,32 @@ def check_state(ups):
             charge_battary=state_ups.charge_battery,
             load=state_ups.load,
             working_hours=state_ups.working_hours,
+            low_main_voltage = low_main_voltage,
         )
 
+    print(low_main_voltage + last_state)
+    if low_main_voltage + last_state == 1:
+        print("transition state")
+        noti_main_voltage(ups, low_main_voltage, last_state, main_voltage,)
+
     return state
+
+def get_state(ups):
+    try:
+        state_ups = get_state_ups(host=ups.ip, port=ups.port, login=ups.login, password=ups.password)
+    except Exception as err:
+        return None
+    return state_ups
+
+def check_low_main_voltage(main_voltage):
+    if main_voltage < 190:
+        return True
+    return False
+
+def check_last_state(ups) -> bool:
+    last_state = StateHistory.objects.filter(ups=ups).latest('date_add')
+    return last_state.low_main_voltage
+
 
 
 def check_detail(ups):
@@ -40,11 +66,3 @@ def check_detail(ups):
             serial_number = detail_ups.serial_number,
         )
     return detail
-    
-
-
-def low_main_voltage(ups, main_voltage):
-    pass
-
-def write_log():
-    pass
