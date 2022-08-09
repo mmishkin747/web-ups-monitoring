@@ -2,16 +2,13 @@ from ..models import StateHistory, ReportHIstory, ErrorUPS
 from .state_telnet import get_state_ups
 from .datail_telnet import get_detail_ups
 from .notification.main_noti import noti_main_voltage
+import logging
+
 
 
 def check_state(ups):
-    
-    state_ups = get_state(ups)
 
-    if state_ups == None:
-        print("error con")
-        return None
-    
+    state_ups = get_state(ups)
     main_voltage = state_ups.main_voltage
     low_main_voltage = check_low_main_voltage(main_voltage=main_voltage)
     last_state = check_last_state(ups=ups)
@@ -25,18 +22,15 @@ def check_state(ups):
             low_main_voltage = low_main_voltage,
         )
 
-    print(low_main_voltage + last_state)
     if low_main_voltage + last_state == 1:
-        print("transition state")
         noti_main_voltage(ups, low_main_voltage, last_state, main_voltage,)
 
     return state
 
 def get_state(ups):
-    try:
-        state_ups = get_state_ups(host=ups.ip, port=ups.port, login=ups.login, password=ups.password)
-    except Exception as err:
-        return None
+ 
+    state_ups = get_state_ups(host=ups.ip, port=ups.port, login=ups.login, password=ups.password)
+
     return state_ups
 
 def check_low_main_voltage(main_voltage):
@@ -45,7 +39,12 @@ def check_low_main_voltage(main_voltage):
     return False
 
 def check_last_state(ups) -> bool:
-    last_state = StateHistory.objects.filter(ups=ups).latest('date_add')
+    try:
+        last_state = StateHistory.objects.filter(ups=ups).latest('date_add')
+    except Exception as err:
+        logging.warning(f'No found StateHistory for ups: {ups}, err: {err}')
+        return True
+
     return last_state.low_main_voltage
 
 

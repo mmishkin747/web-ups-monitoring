@@ -1,18 +1,18 @@
 
 from enum import Enum
-
+import logging
 import telnetlib
 import time
 from collections import namedtuple
 from enum import Enum
+from .error import ConnectError, ValueStateError, NoneValueError
 
 
-USERNAME = b'brest_monitoring\n'
-PASSWORD = b'12345\n'
 
 State_ups = namedtuple('state_ups', ['temperature', 'main_voltage',
                         'charge_battery', 'capasity_battery', 'working_hours', 'load'],)
                 
+logging.basicConfig(filename='app.log', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 
 class State_Command_UPS(Enum):
@@ -26,15 +26,25 @@ class State_Command_UPS(Enum):
 
 
 
-def get_state_ups( login, password, host:str, port:int=2065,) -> State_ups:
-    telnet = _connect_UPS(host=host, port=port)
-    auth = _check_auth(telnet=telnet)
-    if auth:
-        telnet = _authenticate_connection(telnet=telnet, login=login, password=password)
 
-    values = _get_value_ups(telnet=telnet, command_ups=State_Command_UPS)
-    values = _pars_values(values=values)
-    state_ups = _valid_values(values=values)
+def get_state_ups( login:str, password:str, host:str, port:int=2065,) -> State_ups:
+    try:
+        telnet = _connect_UPS(host=host, port=port)
+        auth = _check_auth(telnet=telnet)
+        if auth:
+            telnet = _authenticate_connection(telnet=telnet, login=login, password=password)
+        values = _get_value_ups(telnet=telnet, command_ups=State_Command_UPS)
+    except Exception as err:
+        err_text = f'Connect Error Host: {host} port: {port}, err: {err}'
+        logging.error(err_text)
+        raise ConnectError(err_text)
+    try:
+        values = _pars_values(values=values)
+        state_ups = _valid_values(values=values)
+    except Exception as err:
+        err_text = f'Error get or pars values for host: {host} port: {port}, err: {err}'
+        logging.error(err_text)
+        raise ValueStateError(err_text)
     return state_ups
 
 def _connect_UPS(host: str, port:int) -> telnetlib.Telnet:
@@ -42,8 +52,8 @@ def _connect_UPS(host: str, port:int) -> telnetlib.Telnet:
     return telnet
 
 def _check_auth(telnet: telnetlib.Telnet) -> bool:
-    time.sleep(1)
-    if telnet.read_very_eager().decode('utf-8'):
+
+    if telnet.read_until(b'Username:', timeout=1):
         return True
     else:
         return False
@@ -52,40 +62,45 @@ def _get_value_ups(telnet:telnetlib.Telnet, command_ups) -> dict:
     state_ups_dict = dict()
     for command in command_ups:
         telnet.write(command.value)
-        time.sleep(0.1)
-        value = telnet.read_very_eager()
+        value = telnet.read_until(b'\n', timeout=4)
+        if not value:
+            err_text = f'No answer to command: {command.value} '
+            logging.error(err_text)
+            raise NoneValueError(err_text)
         state_ups_dict[command.name] = value.decode('utf-8')
+    telnet.close()
     return state_ups_dict
     
 def _authenticate_connection(telnet: telnetlib.Telnet, login, password):
     login_b = bytes(login + "\n", encoding = "utf-8")
     password_b = bytes(password + '\n', encoding = "utf-8")
     telnet.write(login_b)
-    time.sleep(1)
-    telnet.read_until(b'Password:')
+    telnet.read_until(b'Password:', timeout=4)
     telnet.write(password_b)
+    telnet.read_until(b'\n', timeout=2)
     return telnet
 
 def _pars_values(values: dict) -> dict:
     for key, value in values.items():
         values[key] = value.strip('\r\n').strip(':')
-    values.pop('YES', None)
     return values
 
 def _valid_values(values: dict) -> State_ups:
-    for key, value in values.items():
-        try:
-            values[key] = float(value)
-        except ValueError:
-            values[key] = 0
 
-    state_ups = State_ups(temperature=values.get('TEMPRETURE'),
-                            main_voltage=values.get('MAINS_VOLTAGE'),
-                            charge_battery=values.get('CHARGE_BATTERIES'),
-                            capasity_battery=values.get('CAPASITY_BATTERY'),
-                            working_hours=values.get('WORKING_HOURS'),
-                            load=values.get('LOAD'),
+
+    try:
+        capasity_battery=float(values.get('CAPASITY_BATTERY'))
+    except ValueError:
+        capasity_battery = -1
+        
+    state_ups = State_ups(temperature=float(values.get('TEMPRETURE')),
+                            main_voltage=float(values.get('MAINS_VOLTAGE')),
+                            charge_battery=float(values.get('CHARGE_BATTERIES')),
+                            capasity_battery=capasity_battery,
+                            working_hours=float(values.get('WORKING_HOURS')),
+                            load=float(values.get('LOAD')),
     )
+
 
     return state_ups
 
