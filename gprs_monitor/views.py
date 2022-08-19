@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, redirect, render
-
+from django.contrib.auth.decorators import login_required 
 
 from .models import Gprs, GprsCity
 
@@ -9,13 +9,13 @@ from .models import Gprs, GprsCity
 def gprs(request):
     return render(request, 'base.html')
 
-
+@login_required
 def gprs_list(request, city_slug=None):
     clients = Gprs.objects.all()
     cities = GprsCity.objects.all()
 
     if city_slug:
-        city=get_object_or_404(GprsCity, city=city_slug)
+        city=get_object_or_404(GprsCity, city=city_slug, available=True)
   
         clients = clients.filter(city=city)
 
@@ -25,8 +25,8 @@ def gprs_list(request, city_slug=None):
         "cities":cities,
         })
 
-
+@login_required
 def client_datail(request, id):
-    client = get_object_or_404(Gprs, id=id)
+    client = get_object_or_404(Gprs, id=id, available=True)
 
     return render(request, "gprs_detail.html", {"client": client})

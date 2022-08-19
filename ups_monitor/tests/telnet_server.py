@@ -7,27 +7,31 @@ socket.gethostname()
 
 # Connect to the server with `telnet $HOSTNAME 5000`.
 # 
-#shoud add param badparam and goodparam
-def telnet_server_test(main_voltage:int=220, no_valid:bool=False):
+def telnet_server_test(port:int=2065, main_voltage:int=220, no_valid:bool=False, no_value:bool=False):
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.setblocking(False)
-    server.bind(('127.0.0.1', 2065))
+    server.bind(('127.0.0.1', port))
     server.listen(5)
 
     connections = []
-    telnet_close = False
     serv_sleep = 0.0
     
     if no_valid:
         main_voltage = bytes('data' + '\n', encoding="utf-8")
     else:
-        
         main_voltage = bytes(str(main_voltage) + "\n", encoding = "utf-8")
 
+    if no_value:
+        load = b''
+        voltage = b''
+
+    else:
+        load = b'50\r\n'
+        voltage = b'24'
+        
+
     while True:
-        if telnet_close == True:
-            
-            return print('------------Telnet server deaded-----------')
+
         try:
             connection, address = server.accept()
             connection.setblocking(True)
@@ -39,13 +43,11 @@ def telnet_server_test(main_voltage:int=220, no_valid:bool=False):
             try:
                 
                 message = connection.recv(4096)
-                
-                
+                           
             except BlockingIOError:
                 continue
             if not message:
                 continue
-            print(message)
             rand_num = uniform(0,3)
             time.sleep(rand_num)
             serv_sleep += rand_num
@@ -64,11 +66,22 @@ def telnet_server_test(main_voltage:int=220, no_valid:bool=False):
                 case b'j':
                     connection.send(b'60\r\n')
                 case b'P':
-                    connection.send(b'50\r\n')   
-                    print(f'------------Server sleped at {serv_sleep} ')
-                    #telnet_close = True
+                    connection.send(load)   
+                case b'\x01':
+                    connection.send(b'ModelTest')
+                case b'B':
+                    connection.send(voltage)
+                case b'W':
+                    connection.send(b'Ok')
+                case b'm':
+                    connection.send(b'01/01/22')
+                case b'x':
+                    connection.send(b'01/02/22')
+                case b'n':
+                    connection.send(b'0000test0000')
                 case b'close\r\n':
-                    return
+                    server.close()    
+                    return 
 
 if __name__=="__main__":
     telnet_server_test()

@@ -5,7 +5,7 @@ import telnetlib
 import time
 from collections import namedtuple
 from enum import Enum
-from .error import ConnectError, ValueStateError, NoneValueError
+from .error import ConnectError, ValueStateError
 
 
 
@@ -33,7 +33,7 @@ def get_state_ups( login:str, password:str, host:str, port:int=2065,) -> State_u
         auth = _check_auth(telnet=telnet)
         if auth:
             telnet = _authenticate_connection(telnet=telnet, login=login, password=password)
-        values = _get_value_ups(telnet=telnet, command_ups=State_Command_UPS)
+        values = _get_value_ups(telnet=telnet, commands_ups=State_Command_UPS)
     except Exception as err:
         err_text = f'Connect Error Host: {host} port: {port}, err: {err}'
         logging.error(err_text)
@@ -42,7 +42,7 @@ def get_state_ups( login:str, password:str, host:str, port:int=2065,) -> State_u
         values = _pars_values(values=values)
         state_ups = _valid_values(values=values)
     except Exception as err:
-        err_text = f'Error get or pars values for host: {host} port: {port}, err: {err}'
+        err_text = f'Error get for param values for host: {host} port: {port}, err: {err}'
         logging.error(err_text)
         raise ValueStateError(err_text)
     return state_ups
@@ -52,21 +52,20 @@ def _connect_UPS(host: str, port:int) -> telnetlib.Telnet:
     return telnet
 
 def _check_auth(telnet: telnetlib.Telnet) -> bool:
-
     if telnet.read_until(b'Username:', timeout=1):
         return True
     else:
         return False
 
-def _get_value_ups(telnet:telnetlib.Telnet, command_ups) -> dict:
+def _get_value_ups(telnet:telnetlib.Telnet, commands_ups) -> dict:
     state_ups_dict = dict()
-    for command in command_ups:
+    for command in commands_ups:
         telnet.write(command.value)
         value = telnet.read_until(b'\n', timeout=4)
         if not value:
             err_text = f'No answer to command: {command.value} '
             logging.error(err_text)
-            raise NoneValueError(err_text)
+            raise ValueStateError(err_text)
         state_ups_dict[command.name] = value.decode('utf-8')
     telnet.close()
     return state_ups_dict

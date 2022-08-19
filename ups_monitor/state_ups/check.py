@@ -50,11 +50,9 @@ def check_last_state(ups) -> bool:
 
 
 def check_detail(ups):
-    try:
-        detail_ups = get_detail_ups(host=ups.ip, port=ups.port, login=ups.login, password=ups.password)
-    except Exception as err:
-        return None
-    
+
+    detail_ups = get_detail_ups(host=ups.ip, port=ups.port, login=ups.login, password=ups.password)
+
     detail = ReportHIstory.objects.create(
             ups=ups,
             model = detail_ups.model,

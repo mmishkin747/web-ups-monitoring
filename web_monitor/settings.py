@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'ups_monitor',
     'gprs_monitor',
     'rest_framework',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -105,6 +106,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',  # <-- And here
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ],
+}
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
@@ -135,5 +144,5 @@ LOGIN_URL = 'login'
 LOGOUT = 'logout'
 LOGOUT_REDIRECT_URL = '/'
 
-CRONJOBS = [('*/1 * * * *', 'ups_monitor.cron.cron_check','>>/tmp/test.log')]
+CRONJOBS = [('*/5 * * * *', 'ups_monitor.cron.cron_check','>>/tmp/test.log')]
 

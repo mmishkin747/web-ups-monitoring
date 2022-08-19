@@ -10,5 +10,5 @@ class ConnectError(StateUpsError):
 class ValueStateError(StateUpsError):
     pass
 
-class NoneValueError(StateUpsError):
+class ValueDetailError(StateUpsError):
     pass

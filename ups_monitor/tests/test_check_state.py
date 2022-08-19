@@ -1,12 +1,11 @@
 import sys
-from unittest import result
 from django.test import TestCase
 from .telnet_server import telnet_server_test
 from ..state_ups.state_telnet import get_state_ups, State_ups
 from ..state_ups.check import check_last_state, check_state
 from ..models import UPS, StateHistory
 from threading import Thread
-from ..state_ups.error import ConnectError, ValueStateError, NoneValueError
+from ..state_ups.error import ConnectError, ValueStateError
 import logging
 from logging import StreamHandler, Formatter
 import telnetlib
@@ -22,10 +21,10 @@ class GetStateTestCase(TestCase):
 
     @classmethod
     def setUpClass(cls):
+        super(GetStateTestCase, cls).setUpClass()
         th = Thread(target=telnet_server_test)
         th.start()
-        super().setUpClass()
-
+        
     @classmethod
     def setUpTestData(cli):
         UPS.objects.get_or_create(
@@ -38,8 +37,6 @@ class GetStateTestCase(TestCase):
             )
         StateHistory()
         
-
-    
     @classmethod
     def tearDownClass(cls):
         telnet = telnetlib.Telnet(host='127.0.0.1', port=2065)
@@ -77,30 +74,29 @@ class GetStateTestCase(TestCase):
         self.assertEqual(result, response)
 
 
-class ErrorTestCase(TestCase):
+class ErrorStateTestCase(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        th = Thread(target=telnet_server_test, args=(230, False))
+        super(ErrorStateTestCase, cls).setUpClass()
+        th = Thread(target=telnet_server_test, args=(2064, 230, False))
         th.start()
-        super().setUpClass()
 
     @classmethod
     def setUpTestData(cli):
         UPS.objects.get_or_create(
             name='testUPS',
             ip='127.0.0.1',
-            port=2065,
+            port=2064,
             login = 'testlogin',
             password='12345',
             descript='ups for test',
             )
         StateHistory()
     
-    
     @classmethod
     def tearDownClass(cls):
-        telnet = telnetlib.Telnet(host='127.0.0.1', port=2065)
+        telnet = telnetlib.Telnet(host='127.0.0.1', port=2064)
         telnet.write(b'close\r\n')
         telnet.close
         super().tearDownClass()
@@ -113,14 +109,14 @@ class ErrorTestCase(TestCase):
         test_ups = UPS.objects.get(pk=1)
         try:
             check_state(test_ups)
-        except Exception :
+        except ValueStateError :
             with open("app.log", "r") as log_read:
                 len_log_file_after = len(log_read.readlines())
             self.assertEqual(len_log_file_before + 1, len_log_file_after)
 
     def test_con_err_and_log(self):
         #This is try connect to server who not response, test for writting log file
-        logger.debug('Run test con err and log')
+        logger.debug('Run test try state con err and check log')
         test_ups = UPS.objects.get(pk=1)
         with open("app.log", "r") as log_read:
             len_log_file_before = len(log_read.readlines())
@@ -139,6 +135,34 @@ class ErrorTestCase(TestCase):
         result = check_last_state(test_ups)
         self.assertEqual(result, True)
                 
+
+class ErrorCoStateTestCase(TestCase):
+
+    @classmethod
+    def setUpTestData(cli):
+        UPS.objects.get_or_create(
+            name='testUPS',
+            ip='127.0.0.1',
+            port=2068,
+            login = 'testlogin',
+            password='12345',
+            descript='ups for test',
+            )
+        StateHistory()
+
+    def test_con_err_and_log(self):
+        #This is try connect to server who not response, test for writting log file
+        logger.debug('Run test try state con err and check log')
+        test_ups = UPS.objects.get(pk=1)
+        with open("app.log", "r") as log_read:
+            len_log_file_before = len(log_read.readlines())
+        try:
+            check_state(ups=test_ups)
+        except ConnectError:
+            with open("app.log", "r") as log_read:
+                len_log_file_after = len(log_read.readlines())
+            self.assertEqual(len_log_file_before + 1, len_log_file_after)
+        self.assertFalse
 
 class RealUpsTestCase(TestCase):
 

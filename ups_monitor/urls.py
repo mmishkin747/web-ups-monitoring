@@ -8,10 +8,12 @@ urlpatterns = [
     path('', views.index ,name='index'),
     path('ups/', views.ups_list),
     path('<str:ip>/', views.detail, name='detail'),
-    path('api/state_ups/', views.ups_state_list),
-    path('api/check_now/<str:ip>/', views.check_state_now),
-    path('api/detail_ups/<str:ip>/', views.ups_detail),
-    path('api/update_detail/<str:ip>/', views.update_detail), 
-    path('orders_page/', views.orders_app),
-    path('detail_ups/', views.detail_ups),
+    path('api/state_ups/', views.UpsStateList.as_view()),
+    path('api/check_now/<str:ip>/', views.CheckStateNow.as_view()),
+    path('api/update_detail/<str:ip>/', views.UpdateDetail.as_view()), 
 ]
+
+
+#-----------------------------------------------------------------------
+
+    #path('api/detail_ups/<str:ip>/', views.ups_detail), #future

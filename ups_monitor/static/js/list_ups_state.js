@@ -1,10 +1,7 @@
 
 document.addEventListener("DOMContentLoaded", function() {
-
-	console.log("загружена страница");
+	// console.log("загружена страница");
   update();
-  
-  
 });
 
 function update(){
@@ -13,7 +10,7 @@ function update(){
   
       dataType: 'json',
       success: function (data) {
-        console.log(data);
+        // console.log(data);
 
         for (ups of data.data){
             
@@ -24,21 +21,15 @@ function update(){
             el.getElementsByClassName('ups_temperature')[0].textContent = ups.temperature;
             el.getElementsByClassName('ups_charge_battary')[0].textContent = ups.charge_battary;
             el.getElementsByClassName('ups_date_add')[0].textContent = ups.date_add;
-            console.log(el.getElementsByClassName('ups_main_voltage')[0].textContent);
+            // console.log(el.getElementsByClassName('ups_main_voltage')[0].textContent);
             if (el.getElementsByClassName('ups_main_voltage')[0].textContent < 10){
               $(document.getElementById(ups.ups)).css('background-color','red');
             }else {
               $(document.getElementById(ups.ups)).css('background-color','white');
             }
-          }
-        
-
-            
-        }
-        
-      }); 
-    
-      
+          }   
+        }     
+      });  
     };
 
 setInterval(update, 60000);
@@ -46,7 +37,7 @@ setInterval(update, 60000);
 $(document).ready(function () {   
 $("#check_now").click(function (btn) {
   var input = $(this).val();
-  console.log(btn.currentTarget.value);
+  // console.log(btn.currentTarget.value);
 
   $.ajax({
       url: '/api/check_now/' + btn.currentTarget.value,
@@ -68,10 +59,7 @@ $("#check_now").click(function (btn) {
           }else {
             $(document.getElementById(ups.ups)).css('background-color','white');
           }
-        
-
-
-      }, 
+       }, 
     });
   });
 });

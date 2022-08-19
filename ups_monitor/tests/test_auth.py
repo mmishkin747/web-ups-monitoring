@@ -12,7 +12,7 @@ self.client.force_login(User.objects.get_or_create(username='testuser')[0])
 c.post('/login/', {'name': 'fred', 'passwd': 'secret'})
 """
 
-class AuthTest(TestCase):
+class AuthTestCase(TestCase):
     @classmethod
     def setUpTestData(cli):
         UPS.objects.get_or_create(

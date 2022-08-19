@@ -34,6 +34,7 @@ class Gprs(models.Model):
     email_client = models.EmailField()
     date_con = models.CharField(max_length=300)
     description = models.CharField(max_length=300)
+    available = models.BooleanField(default=True)
 
     def get_absolute_url(self):
         return reverse('gprs_monitor:gprs_client_detail',
