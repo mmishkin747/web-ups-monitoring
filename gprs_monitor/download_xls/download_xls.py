@@ -1,33 +1,10 @@
-
-from pandas import DataFrame, read_csv
 from datetime import datetime
-
-
-#import matplotlib.pyplot as plt
-
 import pandas as pd
-
-from .models import GprsCity, Gprs
+from ..models import GprsCity, Gprs
 from typing import NamedTuple
 
-file = r'gprs_monitor/ERIP-GPRS.xls'
-file1 = r'ERIP-GPRS.xls'
-df = pd.read_excel(file)
 
-
-def unic_city():
-    list_gprs_city = []
-    for city in df['Город']:
-        if city in list_gprs_city:
-            continue
-        else:
-            list_gprs_city.append(city)
-
-    return list_gprs_city
-
-def creat_db_city(list_city = unic_city()):
-    for city in list_city:
-        GprsCity(city=city).save()
+# gprs_monitor/download_xls/ERIP-GPRS.xls
 
 class GprsClient(NamedTuple):
     city: str
@@ -45,10 +22,36 @@ class GprsClient(NamedTuple):
     date_con: str | None
     description: str | None
 
+def main():
+    while True:
+        path = input()
+        try:
+            df = pd.read_excel(path)
+        except Exception:
+            print("--------Error open file------")
+            continue
+        break
 
-def get_client_list():
+    creat_db_city(_unic_city(df))
+    create_db_gprs(get_client_list(df=df))
+
+
+def creat_db_city(list_city:list):
+    for city in list_city:
+        GprsCity(city=city).save()
+
+def _unic_city(df:dict):
+    list_gprs_city = []
+    for city in df['Город']:
+        if city in list_gprs_city:
+            continue
+        else:
+            list_gprs_city.append(city)
+    return list_gprs_city
+
+def get_client_list(df:dict) -> GprsClient:
     gprs_client_list = []
-    for index, row in df.iterrows():
+    for _index, row in df.iterrows():
         #print(row.keys())
         #print(f'City: {row.get("Город")} {row.get("Договор № ")}')
         client = GprsClient(
@@ -77,9 +80,8 @@ def pars_date(date):
         valid_date = datetime.strptime(str(date), "%Y-%m-%d %H:%M:%S"),
         return valid_date
 
-" %d.%m.%Y"
 
-def create_db_gprs(list_client=get_client_list()):
+def create_db_gprs(list_client:GprsClient):
 
     for client_gprs in list_client:
         client_gprs.city

@@ -4,7 +4,7 @@ from .models import GprsCity, Gprs
 # Register your models here.
 
 class GprsCityAdmin(admin.ModelAdmin):
-    list_display = ['city']
+    list_display = ['city','slug']
 
 admin.site.register(GprsCity, GprsCityAdmin)
 

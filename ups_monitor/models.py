@@ -1,5 +1,6 @@
 from ast import arg
 from datetime import datetime, date
+from json import load
 from django.urls import reverse
 from django.utils import timezone
 from django.db import models
@@ -20,7 +21,7 @@ class UPS(models.Model):
         ordering = ('name',)
         verbose_name = 'UPS'
         verbose_name_plural = 'UPS'
-    
+
     def __str__(self):
         return self.name
 

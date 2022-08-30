@@ -1,22 +1,28 @@
 from django.db import models
 from django.urls import reverse
+from pytils.translit import slugify
 
 # Create your models here.
 
 class GprsCity(models.Model):
     city = models.CharField(max_length=100)
+    slug = models.SlugField()
 
     class Meta:
         ordering = ('city',)
         verbose_name = 'City'
         verbose_name_plural = 'Cities'
+    
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.city)
+        super(GprsCity, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.city
     
     def get_absolute_url(self):
         return reverse('gprs_monitor:gprs_list_by_city',
-                        args=[self.city])
+                        args=[self.slug])
 
 class Gprs(models.Model):
     Operators= models.TextChoices('operators', 'A1 MTS life')

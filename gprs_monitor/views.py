@@ -10,12 +10,12 @@ def gprs(request):
     return render(request, 'base.html')
 
 @login_required
-def gprs_list(request, city_slug=None):
+def gprs_list(request, slug=None):
     clients = Gprs.objects.all()
     cities = GprsCity.objects.all()
 
-    if city_slug:
-        city=get_object_or_404(GprsCity, city=city_slug, available=True)
+    if slug:
+        city=get_object_or_404(GprsCity, slug=slug,)
   
         clients = clients.filter(city=city)
 
@@ -27,6 +27,6 @@ def gprs_list(request, city_slug=None):
 
 @login_required
 def client_datail(request, id):
-    client = get_object_or_404(Gprs, id=id, available=True)
+    client = get_object_or_404(Gprs, id=id)
 
     return render(request, "gprs_detail.html", {"client": client})

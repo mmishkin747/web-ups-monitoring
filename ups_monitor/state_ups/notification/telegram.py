@@ -1,16 +1,15 @@
 import requests
+from environs import Env
+
+env = Env()
+env.read_env()
 
 
 def send_telegram(text: str):
-    """
-    data={'chat_id':-741325756, 'text':text, 'parse_mode':'Markdown'}
-    req = requests.post('https://api.telegram.org/bot5378416270:AAHzMvey_dlEeGriPQjTD46NJA_5fgE3s1g/sendMessage', data=data)
-    print(req.status_code)
-    """
-
-    token = "5378416270:AAHzMvey_dlEeGriPQjTD46NJA_5fgE3s1g"
+  
+    token = env.str("BOT_TOKEN")
     url = "https://api.telegram.org/bot"
-    channel_id = "-741325756"
+    channel_id = env.str("CHANNEL_ID")
     url += token
     method = url + "/sendMessage"
 
