@@ -65,7 +65,6 @@ class GetStateTestCase(TestCase):
         )
         self.assertEqual(result, state_ups_test)
 
-
     def test_check_state(self):
         logger.debug('Run check state')
         test_ups = UPS.objects.get(pk=1)
@@ -136,7 +135,7 @@ class ErrorStateTestCase(TestCase):
         self.assertEqual(result, True)
                 
 
-class ErrorCoStateTestCase(TestCase):
+class ErrorConStateTestCase(TestCase):
 
     @classmethod
     def setUpTestData(cli):
@@ -164,10 +163,4 @@ class ErrorCoStateTestCase(TestCase):
             self.assertEqual(len_log_file_before + 1, len_log_file_after)
         self.assertFalse
 
-class RealUpsTestCase(TestCase):
 
-    # def test_real_ups(self):
-    #     result = get_state_ups(login="brest_monitoring", password='12345', host='10.55.100.18' )
-    #     print('-------------------Test real ups-----------------------')
-    #     print(result)
-    pass

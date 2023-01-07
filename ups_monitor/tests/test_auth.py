@@ -2,15 +2,6 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 from ..models import UPS
 
-"""
-user = User.objects.create(username='testuser', password='12345')
-c = Client
-logged_in = c.login(username='testuser', password='12345')
-
-self.client.force_login(User.objects.get_or_create(username='testuser')[0])
-
-c.post('/login/', {'name': 'fred', 'passwd': 'secret'})
-"""
 
 class AuthTestCase(TestCase):
     @classmethod

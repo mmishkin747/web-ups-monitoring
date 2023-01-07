@@ -15,11 +15,11 @@
       <h1 class="my-3">Uninterruptibles Power Source</h1>
       <div class="row">
         {% for ups in ups_qs %}
-        <div class="col-md-4" id="{{ ups.ups.id }}">
+        <div class="col-md-4" id="{{ ups.id }}">
           <div class="card mb-4 shadow-sm">
             <img src="{% static "img/third_img.jpg" %}" alt="" class="card-img-top">
             <div class="card-body">
-              <h4 class="card-title" >Name: <span class="ups_name">{{ ups.ups.name }}</span></h4>
+              <h4 class="card-title" >Name: <span class="ups_name">{{ ups.name }}</span></h4>
               <p class="card-text" >Main voltage: <span class="ups_main_voltage"></span>  V</p>
               <p class="card-text" >Load: <span class="ups_load"></span> </p>
               <p class="card-text" >Temperature: <span class="ups_temperature"></span> C</p>
@@ -31,7 +31,7 @@
                 
               </div>
               <div class="d-flex justify-content-between align-items-center">
-              <button class="btn btn-primary" type="button" value="{{ ups.ups.ip }}" id="check_now">Check</button>
+              <button class="btn btn-primary check_now" type="button" value="{{ ups.ip }}" >Check</button>
               <a href="{{ ups.get_absolute_url }}" class="btn btn-primary">Detail</a>
               </div>
             </div>

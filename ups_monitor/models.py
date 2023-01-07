@@ -6,8 +6,6 @@ from django.utils import timezone
 from django.db import models
 
 
-# Create your models here.
-
 class UPS(models.Model):
     name = models.CharField(max_length=30, db_index=True)
     ip = models.CharField(max_length=30)
@@ -25,9 +23,10 @@ class UPS(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('ups_monitor:detail', args=[self.ip])
+
     
-
-
 class StateHistory(models.Model):
     ups = models.ForeignKey(UPS, on_delete=models.CASCADE)
     main_voltage = models.FloatField()

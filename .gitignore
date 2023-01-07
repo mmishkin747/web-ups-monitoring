@@ -141,4 +141,6 @@ __pycache__/
 
 # Excel
 *.xls
-migrations/
+/migrations/
+gprs_monitor/migrations/
+ups_monitor/migrations/

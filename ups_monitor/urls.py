@@ -1,4 +1,4 @@
-from django.urls import path, include
+from django.urls import path
 
 from . import views
 
@@ -11,6 +11,7 @@ urlpatterns = [
     path('api/state_ups/', views.UpsStateList.as_view()),
     path('api/check_now/<str:ip>/', views.CheckStateNow.as_view()),
     path('api/update_detail/<str:ip>/', views.UpdateDetail.as_view()), 
+    path('api/notiPRTG/', views.NotiPRTG.as_view()),
 ]
 
 

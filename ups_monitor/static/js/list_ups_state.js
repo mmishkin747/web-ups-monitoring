@@ -35,7 +35,7 @@ function update(){
 setInterval(update, 60000);
 
 $(document).ready(function () {   
-$("#check_now").click(function (btn) {
+$(".check_now").click(function (btn) {
   var input = $(this).val();
   // console.log(btn.currentTarget.value);
 
@@ -44,7 +44,7 @@ $("#check_now").click(function (btn) {
 
       dataType: 'json',
       success: function (data) {
-        console.log(data.data);
+        // console.log(data.data);
             
           const el = document.getElementById(data.data.ups);
           //el.getElementsByClassName('ups_name')[0].textContent = ups.name;

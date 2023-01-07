@@ -10,7 +10,6 @@ import sys
 from ..state_ups.error import ConnectError, ValueDetailError
 
 
-
 logger = logging.getLogger('logger')
 logger.setLevel(logging.DEBUG)
 handler = StreamHandler(stream=sys.stdout)
@@ -49,7 +48,6 @@ class GetDatailTestCase(TestCase):
         detail_ups = check_detail(ups=test_ups)
         response = ReportHIstory.objects.get(ups=test_ups)
         self.assertEqual(detail_ups, response)
-
 
 
 class ErrorDetailTestCase(TestCase):

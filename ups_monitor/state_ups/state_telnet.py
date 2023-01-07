@@ -5,6 +5,8 @@ import telnetlib
 import time
 from collections import namedtuple
 from enum import Enum
+
+from .notification.telegram import send_telegram
 from .error import ConnectError, ValueStateError
 
 
@@ -37,6 +39,7 @@ def get_state_ups( login:str, password:str, host:str, port:int=2065,) -> State_u
     except Exception as err:
         err_text = f'Connect Error Host: {host} port: {port}, err: {err}'
         logging.error(err_text)
+        send_telegram(err_text)
         raise ConnectError(err_text)
     try:
         values = _pars_values(values=values)
@@ -44,6 +47,7 @@ def get_state_ups( login:str, password:str, host:str, port:int=2065,) -> State_u
     except Exception as err:
         err_text = f'Error get for param values for host: {host} port: {port}, err: {err}'
         logging.error(err_text)
+        send_telegram(err_text)
         raise ValueStateError(err_text)
     return state_ups
 
@@ -65,6 +69,7 @@ def _get_value_ups(telnet:telnetlib.Telnet, commands_ups) -> dict:
         if not value:
             err_text = f'No answer to command: {command.value} '
             logging.error(err_text)
+            send_telegram(err_text)
             raise ValueStateError(err_text)
         state_ups_dict[command.name] = value.decode('utf-8')
     telnet.close()
@@ -105,6 +110,3 @@ def _valid_values(values: dict) -> State_ups:
 
 
 
-if __name__=="__main__":
-    print('Brest UPS')
-    print(get_state_ups(host='10.55.10.100', port=2065, login='brest_monitoring', password=12345))

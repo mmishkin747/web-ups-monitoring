@@ -3,16 +3,11 @@ from .telegram import send_telegram
 datetime
 
 
-
-
-
 def noti_main_voltage(ups, low_main_voltage, last_state, main_voltage,):
     if low_main_voltage:
         return noti_low_main_voltage(ups, main_voltage,)
     if last_state:
         return noti_report_main_voltage(ups, main_voltage)
-
-
 
 def noti_low_main_voltage(ups, main_voltage):
     

@@ -92,8 +92,3 @@ def _valid_values(values: dict) -> Detail_ups:
 
     return state_ups
 
-
-
-if __name__=="__main__":
-    print('Brest UPS')
-    print(get_detail_ups(host='10.55.10.100', port=2065, login='brest_monitoring', password=12345))
